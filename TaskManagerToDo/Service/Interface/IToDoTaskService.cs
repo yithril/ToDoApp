@@ -7,7 +7,7 @@ namespace TaskManagerToDo.Service.Interface
 {
     public interface IToDoTaskService
     {
-        Task<List<ToDoTask>> GetTasks(ApplicationUser user, string searchTerm = "", bool? isComplete = null);
+        Task<List<ToDoTask>> GetTasks(ApplicationUser user, string searchTerm = "");
         Task<ToDoTask> GetTaskById(int id);
         Task<ToDoTask> UpdateTask(ToDoTask toDoTask);
         Task<ToDoTask> CreateTask(ToDoTask toDoTask);

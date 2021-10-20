@@ -19,18 +19,13 @@ namespace TaskManagerToDo.Service
             _applicationDbContext = applicationDbContext;
         }
 
-        public async Task<List<ToDoTask>> GetTasks(ApplicationUser user, string searchTerm = "", bool? isComplete = null)
+        public async Task<List<ToDoTask>> GetTasks(ApplicationUser user, string searchTerm = "")
         {
             var toDos = _applicationDbContext.ToDoTasks.Where(x => x.UserID == user.Id);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 toDos = toDos.Where(x => x.Description.ToLower().Contains(searchTerm.ToLower()));
-            }
-
-            if (isComplete != null)
-            {
-                toDos = toDos.Where(x => x.IsComplete == isComplete);
             }
 
             return await toDos.ToListAsync();

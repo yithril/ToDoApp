@@ -21,7 +21,7 @@ namespace TaskManagerToDo.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string searchTerm = "", bool? isComplete = null)
+        public async Task<IActionResult> Index(string searchTerm = "")
         {
             var currentUser = await _userManager.GetUserAsync(User);
 
@@ -30,7 +30,7 @@ namespace TaskManagerToDo.Controllers
                 return View();
             }
 
-            return View(await _service.GetTasks(currentUser, searchTerm, isComplete));
+            return View(await _service.GetTasks(currentUser, searchTerm));
         }
 
         public async Task<IActionResult> Details(int? id)

@@ -1,0 +1,97 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TaskManagerToDo.Identity
+@model IEnumerable<TaskManagerToDo.Models.ToDoTask>
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <h1>Task List</h1>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="input-group mb-3">
+                <input type="text" id="txtSearch" class="form-control" placeholder="Search by description" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <button class="btn btn-primary" id="btnSearch">Search</button>
+            </div>
+        </div>
+        <div class="col-6"></div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DueDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsComplete)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DueDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsComplete)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">No Tasks!</h4>
+            <p>Create a new task and it will show on the list.</p>
+        </div>
+    }
+
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Please log in!</h4>
+        <p>Please log in to view your task list. Please register if you do not have an account.</p>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+
+        $("#btnSearch").click(function() {
+            var searchTerm = $("#txtSearch").val();
+
+            if (searchTerm != '') {
+                document.location = '@Url.Action("Index", "ToDoTasks")?searchTerm=' + searchTerm;
+            }
+        });
+
+    });
+</script>
